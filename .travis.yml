@@ -20,3 +20,15 @@ after_success:
   - docker push bjwanco/multi-nginx
   - docker push bjwanco/multi-server
   - docker push bjwanco/multi-worker
+
+#deploy:
+# provider: elasticbeanstalk
+# region: us-west-1
+# app: multi-docker
+# env: MultiDocker-env
+# bucket_name: elasticbeanstalke-us-west-1-1234567890
+# on:
+#   branch: master
+# access_key_id: $AWS_ACCESS_KEY
+# secret_access_key:
+#   secure: $AWS_SECRET_KEY
