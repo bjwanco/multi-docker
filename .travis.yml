@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install
+  - docker build -t bjwanco/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run bjwanco/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t bjwanco/multi-client ./client
+  - docker build -t bjwanco/multi-nginx ./nginx
+  - docker build -t bjwanco/multi-server ./server
+  - docker build -t bjwanco/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push bjwanco/multi-client
+  - docker push bjwanco/multi-nginx
+  - docker push bjwanco/multi-server
+  - docker push bjwanco/multi-worker
